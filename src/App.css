@@ -1,11 +1,10 @@
 * {
     margin: 0;
     padding: 0;
-    flex-grow: 0;
-    flex-shrink: 0;
+    box-sizing: border-box;
 }
 body {
-    min-height: 100vh;
+    min-height: 90vh;
     overflow-x: hidden;
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
 }

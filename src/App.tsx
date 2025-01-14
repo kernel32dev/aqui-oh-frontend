@@ -1,9 +1,9 @@
 import './App.css';
-import Login from './Login';
+import Login from './pages/Login/Login';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-router-dom";
-import { useAuth } from './auth';
+import { useAuth } from './pages/Login/auth';
 import { useEffect } from 'react';
-import Home from './Home';
+import Home from './pages/Home/Home';
 
 const App = () => {
     const [me, setJwts] = useAuth();

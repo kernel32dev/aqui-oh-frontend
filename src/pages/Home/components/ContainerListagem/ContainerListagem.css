@@ -1,0 +1,8 @@
+div.container-listagem{
+    border: 3px solid blue;
+
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
