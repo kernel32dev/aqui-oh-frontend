@@ -11,6 +11,9 @@ interface Reclamacao {
     createdAt: string;
     local: string;
     status: string;
+    competecia: {
+        id: "cm5uc3ing0000kkv8mi759vsq",
+    }
 }
 
 interface ContainerListagemProps {
@@ -62,9 +65,9 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                 
                 const filteredReclamacoes = (reclamacoes as Reclamacao[]).filter(reclamacao => {
                     const matchesSearchTerm = reclamacao.title.toLowerCase().includes(searchTerm.toLowerCase());
-                    const matchesStatus = filterStatus ? reclamacao.status === filterStatus : false;
-                    const matchesStartDate = startDate ? new Date(reclamacao.createdAt) >= new Date(startDate) : false;
-                    const matchesEndDate = endDate ? new Date(reclamacao.createdAt) <= new Date(endDate) : false;
+                    const matchesStatus = filterStatus ? reclamacao.status === filterStatus : true;
+                    const matchesStartDate = startDate ? new Date(reclamacao.createdAt) >= new Date(startDate) : true;
+                    const matchesEndDate = endDate ? new Date(reclamacao.createdAt) <= new Date(endDate) : true;
                     return matchesSearchTerm && matchesStatus && matchesStartDate && matchesEndDate;
                 });
 
@@ -90,8 +93,8 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
     return (
 
 
-        <>
-            <h1>Lista de reclamacoes</h1>
+        <div className='div-geral'>
+            <h1>Lista de reclamações</h1>
             
                 <div className="container-listagem">
                     
@@ -116,10 +119,12 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                         reclamacoes.map((reclamacao) => (
                             <ItemLista
                             key={reclamacao.id}
+                            id={reclamacao.id}
                             title={reclamacao.title}
-                            data={new Date(reclamacao.createdAt).toLocaleDateString()}
+                            data={`${new Date(reclamacao.createdAt).getDate().toString()}/0${(new Date(reclamacao.createdAt).getMonth()+1).toString()}/${new Date(reclamacao.createdAt).getFullYear().toString()} `}
                             local={reclamacao.local}
                             status={reclamacao.status }
+                            competenciaId={reclamacao.competecia.id}
                             />
                         ))
                     }
@@ -130,10 +135,12 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                         FiltragemListaReclamacoes.map((reclamacao) => (
                             <ItemLista
                               key={reclamacao.id}
+                              id={reclamacao.id}
                               title={reclamacao.title}
                               data={new Date(reclamacao.createdAt).toLocaleDateString()}
                               local={reclamacao.local}
                               status={reclamacao.status }
+                              competenciaId={reclamacao.competecia.id}
                             />
                         ))
                     }
@@ -145,7 +152,7 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                 
            
         
-        </>
+        </div>
       
     );
 };

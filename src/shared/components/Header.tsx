@@ -5,7 +5,7 @@ import logo from "../../assets/logo.png";
 const Header: React.FC = () => {
   return (
     <>
-      <header>
+      <header id='cabecalho'>
         <img src={logo} alt="Logo do site aqui-oh" />
       </header>
     </>

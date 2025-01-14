@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, useNavigate } from "react-route
 import { useAuth } from './pages/Login/auth';
 import { useEffect } from 'react';
 import Home from './pages/Home/Home';
+import Detalhamento from './pages/Detalhamento/Detalhamento';
 
 const App = () => {
     const [me, setJwts] = useAuth();
@@ -29,6 +30,10 @@ const App = () => {
                 } />
                 <Route path="*" element={
                     <Redirect to="/" />
+                } />
+
+                <Route path="/detalhamento" element={
+                    <Detalhamento competenciaId={''} />
                 } />
             </Routes>
         </Router>

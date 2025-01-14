@@ -4,15 +4,18 @@ import './ItemLista.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import { Link } from 'react-router-dom';
 
 interface ItemListaProps {
+    id?:string;
     title: string;
     data?: string;
-    local?:string
-    status?:string;    
+    local?:string;
+    status?:string;
+    competenciaId?:string;    
 }
 
-const ItemLista: React.FC<ItemListaProps> = ({ title,data,local,status}) => {
+const ItemLista: React.FC<ItemListaProps> = ({ id, title, data, local="Teresina-PI", status, competenciaId }) => {
     return (
 
         <div className="item-lista">
@@ -28,7 +31,12 @@ const ItemLista: React.FC<ItemListaProps> = ({ title,data,local,status}) => {
             </div>
 
             <div className='container-button'>
-                <button>Ver detalhes</button>
+                <Link
+                    to="/detalhamento"
+                    state={{id, title, data, local, status, competenciaId }}
+                >
+                    <button>Ver detalhes</button>
+                </Link>
             </div>
 
 

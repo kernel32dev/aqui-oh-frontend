@@ -83,7 +83,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
             
                          
 
-             <div className="home-container">
+             {/* <div className="home-container">
            
                 <h1>Bem vindo(a) {props.me.name}</h1>
                 <br />
@@ -93,7 +93,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
 
 
 
-            </div>
+            </div> */}
         
         </>
         
