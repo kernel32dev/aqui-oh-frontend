@@ -1,3 +1,7 @@
 header .header-home{
     background-color: #F36926;
 }
+
+button.navbar-toggler.collapsed {
+    height: 8vh;
+}

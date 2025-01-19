@@ -30,7 +30,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
     return (
 
         <>
-            <HeaderHome></HeaderHome>
+            <HeaderHome setJwts={props.setJwts}></HeaderHome>
 
              <div className="search-container">
                     <div className="search-row">

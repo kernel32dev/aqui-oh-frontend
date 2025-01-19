@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import Home from './pages/Home/Home';
 import Detalhamento from './pages/Detalhamento/Detalhamento';
 import CadastroUsuario from './pages/Cadrastro/CadastroUsuario';
+import EditarFuncionario from './pages/Editar/EditarFuncionario';
 
 
 const App = () => {
@@ -39,6 +40,9 @@ const App = () => {
                 } />
                 <Route path="/cadastro" element={
                     <CadastroUsuario />
+                } />
+                <Route path="/editar" element={
+                   <EditarFuncionario></EditarFuncionario>
                 } />
             </Routes>
         </Router>
