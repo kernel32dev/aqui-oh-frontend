@@ -19,7 +19,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
     const [endDate, setEndDate] = useState('');
     
     const [foiFeitoFiltragem, setFoiFeitoFiltragem] = useState(false);
-    let classe_css_que_representa_o_status_reclamacao="resolvida"
+
 
     const handleSearch = () => {
         // Implementar lógica de pesquisa e filtro aqui
@@ -60,7 +60,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
                            >
                             <option value="">Todos os Status</option>
                             <option value="aberto">Aberto</option>
-                            <option value="em andamento">Em Andamento</option>
+                            <option value="em_andamento">Em Andamento</option>
                             <option value="resolvido">Resolvido</option>
                         </select>
                            
@@ -83,7 +83,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
                     
                 </div>
 
-                <h1 className={classe_css_que_representa_o_status_reclamacao}>ola teste</h1>
+             ç
              
              <ContainerListagem  
                     searchTerm={searchTerm}

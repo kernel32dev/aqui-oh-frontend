@@ -70,8 +70,13 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                     const matchesStatus = filterStatus ? reclamacao.status === filterStatus : true;
                     const matchesStartDate = startDate ? new Date(reclamacao.createdAt) >= new Date(startDate) : true;
                     const matchesEndDate = endDate ? new Date(reclamacao.createdAt) <= new Date(endDate) : true;
+                    console.log("reclamacao status: ",reclamacao.status)
+                    console.log("filter status: ",filterStatus)
+                    console.log("comparacao: ",filterStatus==reclamacao.status)
                     return matchesSearchTerm && matchesStatus && matchesStartDate && matchesEndDate;
                 });
+
+                
 
                 
                 console.log('Reclamações filtradas:', filteredReclamacoes);
