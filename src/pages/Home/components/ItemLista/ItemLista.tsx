@@ -5,6 +5,7 @@ import './ItemLista.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import { retornarNomeDaClasseCss } from '../../../../utils/utils';
 
 interface ItemListaProps {
     id?:string;
@@ -16,6 +17,8 @@ interface ItemListaProps {
 }
 
 const ItemLista: React.FC<ItemListaProps> = ({ id, title, data, local="Teresina-PI", status, competenciaId }) => {
+    let classe_css_que_representa_o_status_reclamacao=retornarNomeDaClasseCss(status || "")
+
     return (
 
         <div className="item-lista">
@@ -27,7 +30,7 @@ const ItemLista: React.FC<ItemListaProps> = ({ id, title, data, local="Teresina-
 
             <div className='container-status'>
                 
-                <span className="item-lista-status">{status}</span>
+                <span className={classe_css_que_representa_o_status_reclamacao}>{status}</span>
             </div>
 
             <div className='container-button'>

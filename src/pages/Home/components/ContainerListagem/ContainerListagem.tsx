@@ -127,6 +127,7 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                             local={reclamacao.local}
                             status={ formatarTextoStatus(reclamacao.status) }
                             competenciaId={reclamacao.competecia.id}
+                            
                             />
                         ))
                     }

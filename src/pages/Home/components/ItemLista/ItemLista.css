@@ -77,3 +77,20 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+.aberto{
+    font-weight: bold;
+    color: red;
+}
+.em_andamento{
+    font-weight: bold;
+    color: orange;
+}
+.resolvido{
+    font-weight: bold;
+    color: green;
+}
+.status_desconhecido{
+    font-weight: bold;
+    color: purple;
+}

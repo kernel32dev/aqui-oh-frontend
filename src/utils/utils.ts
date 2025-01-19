@@ -10,3 +10,20 @@ export function formatarTextoStatus(status: string) {
             return 'Status desconhecido';
     }
 }
+
+
+export function retornarNomeDaClasseCss(status_reclamacao:string){
+
+    switch (status_reclamacao) {
+        case 'Aberto':
+            return 'aberto';
+        case 'Em andamento':
+            return 'em_andamento';
+        case 'Resolvido':
+            return 'resolvido';
+        default:
+            return 'status_desconhecido';
+    }
+    
+
+}

@@ -90,46 +90,21 @@ const HeaderHome: React.FC<HeaderHomeProps> = (props) => {
                     <Offcanvas.Header closeButton>
                         <Offcanvas.Title id={`offcanvasNavbarLabel-expand-${expand}`}>
                              <FontAwesomeIcon icon={faUser} />
-                             <h5> {usuario_atual.name}</h5>
+                             <h5 style={{ marginLeft: '10px', display: 'inline-block' }}> {usuario_atual.name}</h5>
                         </Offcanvas.Title>
                     </Offcanvas.Header>
                     <Offcanvas.Body>
                         <Nav className="justify-content-end flex-grow-1 pe-3">
-                            <Nav.Item>Nome: {usuario_atual.name}</Nav.Item>
-                            <Nav.Item>Email: {usuario_atual.email} </Nav.Item>
-                            <Nav.Item>Compêtencia: {competencia?.name} </Nav.Item>
+                            <Nav.Item style={{ marginBottom: '10px' }}> <span style={{fontWeight:"bold"}}>Nome: </span>{usuario_atual.name}</Nav.Item>
+                            <Nav.Item style={{ marginBottom: '10px' }}> <span style={{fontWeight:"bold"}}>Email: </span> {usuario_atual.email} </Nav.Item>
+                            <Nav.Item style={{ marginBottom: '10px' }}> <span style={{fontWeight:"bold"}}>Competência: </span>    {competencia?.name} </Nav.Item>
                             
-                            <Link to="/editar">Editar dados</Link>
-                            <Link to="/login" onClick={() => props.setJwts(null)}>Logoff</Link>
-                            {/* <Nav.Link href="#action1">Home</Nav.Link>
-                            <Nav.Link href="#action2">Link</Nav.Link> */}
+                            <div id='container-butao-profile'>
+                                    <Link to="/editar" style={{ marginBottom: '10px', display: 'block' }}>Editar dados</Link>
+                                    <Link to="/login" onClick={() => props.setJwts(null)} style={{ marginBottom: '10px', display: 'block',backgroundColor:"rgb(243, 105, 38)",color:"white" }} id='butao-logoff'>Logoff</Link>
+                            </div>
                            
-                        {/* <NavDropdown
-                            title="Dropdown"
-                            id={`offcanvasNavbarDropdown-expand-${expand}`}
-                        >
-                            <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action4">
-                            Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action5">
-                            Something else here
-                            </NavDropdown.Item>
-                        </NavDropdown> */}
                         </Nav>
-                        {/* <Form className="d-flex">
-                        <Form.Control
-                            type="search"
-                            placeholder="Search"
-                            className="me-2"
-                            aria-label="Search"
-                        />
-                        <Button variant="outline-success">Search</Button>
-                        </Form> */}
-
-
-                   
                     </Offcanvas.Body>
                     </Navbar.Offcanvas>
                     

@@ -6,3 +6,45 @@ button.navbar-toggler.collapsed {
     height: 8vh;
 }
 
+div#container-butao-profile{
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    gap: 50px;
+
+    margin-top: 70px;
+}
+div#container-butao-profile a{
+    display: block;
+    /* border: 1px solid blue; */
+    text-decoration: none;
+    padding-block: 8px;
+    padding-inline: 10px;
+    border-radius: 15px;
+
+    background-color: #007bff;
+    color: white;
+    border: 1px solid transparent;
+}
+div#container-butao-profile a:hover{
+    display: block;
+    /* border: 1px solid blue; */
+    text-decoration: none;
+    padding-block: 8px;
+    padding-inline: 10px;
+    border-radius: 15px;
+
+    background-color: white;
+    color: #007bff;
+    border: 1px solid black;
+}
+#butao-logoff{
+    background-color: rgb(243, 105, 38);
+    color: white;
+}
+#butao-logoff:hover{
+    background-color: white !important;
+    color: rgb(243, 105, 38) !important;
+    border: 1px solid black;
+}

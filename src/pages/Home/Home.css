@@ -35,6 +35,10 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+
+    min-width: 300px;
+    max-width: 600px;
+    width: 100%;
 }
 
 .search-row button {
@@ -69,6 +73,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
+    
 }
 
 .date-filter-row select {
@@ -109,4 +114,10 @@ nav#menu-opcoes a:hover{
     /* height: 110%; */
     /* font-weight: bold; */
     border: 1px solid black;
+}
+
+
+
+.resolvida{
+    color: green;
 }

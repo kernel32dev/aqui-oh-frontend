@@ -19,6 +19,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
     const [endDate, setEndDate] = useState('');
     
     const [foiFeitoFiltragem, setFoiFeitoFiltragem] = useState(false);
+    let classe_css_que_representa_o_status_reclamacao="resolvida"
 
     const handleSearch = () => {
         // Implementar lógica de pesquisa e filtro aqui
@@ -81,6 +82,8 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
 
                     
                 </div>
+
+                <h1 className={classe_css_que_representa_o_status_reclamacao}>ola teste</h1>
              
              <ContainerListagem  
                     searchTerm={searchTerm}
@@ -92,18 +95,6 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
                     />
             
                          
-
-             {/* <div className="home-container">
-           
-                <h1>Bem vindo(a) {props.me.name}</h1>
-                <br />
-                <Link to="/login">Voltar para o Login</Link>
-                <br />
-                <Link to="/login" onClick={() => props.setJwts(null)}>Logoff</Link>
-
-
-
-            </div> */}
         
         </>
         
