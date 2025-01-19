@@ -5,6 +5,8 @@ import './ContainerListagem.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+import {formatarTextoStatus} from "./../../../../utils/utils";
+
 interface Reclamacao {
     id: string;
     title: string;
@@ -123,7 +125,7 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                             title={reclamacao.title}
                             data={`${new Date(reclamacao.createdAt).getDate().toString()}/0${(new Date(reclamacao.createdAt).getMonth()+1).toString()}/${new Date(reclamacao.createdAt).getFullYear().toString()} `}
                             local={reclamacao.local}
-                            status={reclamacao.status }
+                            status={ formatarTextoStatus(reclamacao.status) }
                             competenciaId={reclamacao.competecia.id}
                             />
                         ))
@@ -139,7 +141,7 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
                               title={reclamacao.title}
                               data={new Date(reclamacao.createdAt).toLocaleDateString()}
                               local={reclamacao.local}
-                              status={reclamacao.status }
+                              status={ formatarTextoStatus(reclamacao.status) }
                               competenciaId={reclamacao.competecia.id}
                             />
                         ))

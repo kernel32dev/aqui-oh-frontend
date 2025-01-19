@@ -3,7 +3,7 @@ import './Detalhamento.css';
 import Header from '../../shared/components/Header';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-
+import { formatarTextoStatus } from '../../utils/utils';
 interface Mensagem {
     id: string;
     text:string;
@@ -33,13 +33,47 @@ const Detalhamento: React.FC <DetalhamentoProps>= () => {
     
     const [listaMensgens,setListaMensagens] = useState<Mensagem[]>([]);
 
+    const [statusReclamacao, setStatusReclamacao] = useState<string>(status);
+    const [novaMensagem, setNovaMensagem] = useState<string>('');
+
+ 
+    async function atualizarStatusReclamacao(status_atual: string) {
+        console.log('Status atual no momento:', statusReclamacao);
+        try {
+            const token_usuario = localStorage.getItem("jwt_access");
+            console.log('Enviando requisição para atualizar status...');
+            const body =await JSON.stringify({ status: status_atual });
+            setStatusReclamacao(formatarTextoStatus(status_atual));
+            const response = await fetch(`http://localhost:3001/api/reclamacao/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${token_usuario}`,
+                    'Content-Type': 'application/json',
+                },
+                body: body
+            });
+            
+
+            if (!response.ok) {
+                throw new Error('Erro na requisição');
+            }
+
+            const data = await response.json();
+            console.log('Status atualizado:', data);
+            setStatusReclamacao(status_atual);
+        } catch (error) {
+            console.error('Erro ao atualizar status:', error);
+        }
+    }
+
     useEffect(() => {
         const fetchMensagens = async () => {
             try {
                 const token_usuario = localStorage.getItem("jwt_access");
                 const response = await axios.get('http://localhost:3001/api/mensagem/'+id, {
                     headers: {
-                        Authorization: `Bearer ${token_usuario}`
+                        Authorization: `Bearer ${token_usuario}`,
+                         ContentType: 'application/json',
                     }
                 });
                 console.log('Mensagens:', response.data);
@@ -64,23 +98,38 @@ const Detalhamento: React.FC <DetalhamentoProps>= () => {
 
             <section className='container-detalhamento'>
 
-                <h1>{title}</h1>
+                <h1 id='titulo-reclamacao' style={{fontSize:"22px"}}>{title}</h1>
 
                 <div className='container-info'>
                     <span> <FontAwesomeIcon icon={faCalendarAlt} /> Data: {data}</span>
                     <span><FontAwesomeIcon icon={faMapMarkerAlt} /> Local: {local}</span>
-                    <span>Status: {status}</span>
+                    <span>Status atual: {statusReclamacao}</span>
+
+                    <form  >
+                        <label htmlFor="status">Selecione o status:</label>
+                        <select name="status" id="status" onChange={ (evento) => { atualizarStatusReclamacao(evento.target.value) }    }   >
+                            <option value="aberto" >Aberto</option>
+                            <option value="em_andamento">Em andamento</option>
+                            <option value="resolvido">Resolvido</option>
+                        </select>
+                        
+                    </form>
                     {/* <span>id: {id}</span> */}
                 </div>
 
-                {/* <div className='container-imagem'>
-                    <span>Imagem:</span>
-                    <br />
-                    <img src="" alt="imagem de exemplo da denuncia" />
-                </div> */}
+                <div className='container-imagem'>
+                        
+                    <img src="https://th.bing.com/th/id/OIP.dIW9qe3--A4I-gMSjtjQjgHaFi?w=800&h=599&rs=1&pid=ImgDetMain" alt="imagem de exemplo da denuncia" />
+                </div>
+
+                <div className='container-mensagem'>
+                        <span>Mensagem:</span>
+                        <p>Gostaria de registrar uma denúncia sobre um problema que está acontecendo na Rua Antônio Ribeiro. Tem um buraco bem grande no meio da rua, que está dificultando a passagem de carros e também é perigoso para pedestres, principalmente à noite, porque é difícil de enxergar. Já vi alguns motoristas precisando desviar de repente, e isso pode acabar causando um acidente. Acho importante que a prefeitura tome providências para sinalizar e consertar o buraco o mais rápido possível, antes que aconteça algo mais grave.</p>
+                </div>
+
 
              
-                {listaMensgens.map((mensagem) => (
+                {/* {listaMensgens.map((mensagem) => (
                     <div key={mensagem.id} className='container-imagem'>
                         {mensagem.image && (
                             <div className='container-imagem'>
@@ -91,10 +140,7 @@ const Detalhamento: React.FC <DetalhamentoProps>= () => {
                     </div>
                 ))}
 
-                {/* <div className='container-mensagem'>
-                    <span>Mensagem:</span>
-                    <p>Texto da mensagem</p>
-                </div> */}
+           
 
 
                 {listaMensgens.map((mensagem) => (
@@ -102,12 +148,25 @@ const Detalhamento: React.FC <DetalhamentoProps>= () => {
                         <span>Mensagem:</span>
                         <p>{mensagem.text}</p>
                     </div>
-                ))}
+                ))} */}
+
+
 
                
 
-                <div className='container-butao-chat2'>
+                {/* <div className='container-butao-chat2'>
                     <button>Ir para chat</button>
+                </div> */}
+
+          <div className='container-input'>
+                    <input
+                        type="text"
+                        placeholder="Digite sua mensagem..."
+                        value={novaMensagem}
+                        onChange={(e) => setNovaMensagem(e.target.value)}
+                        className="textoMensagemEnvio-input"
+                    />
+                    <button type="button"  className="textoMensagemEnvio-button">Enviar</button>
                 </div>
             </section>
          

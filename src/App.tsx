@@ -5,6 +5,8 @@ import { useAuth } from './pages/Login/auth';
 import { useEffect } from 'react';
 import Home from './pages/Home/Home';
 import Detalhamento from './pages/Detalhamento/Detalhamento';
+import CadastroUsuario from './pages/Cadrastro/CadastroUsuario';
+
 
 const App = () => {
     const [me, setJwts] = useAuth();
@@ -34,6 +36,9 @@ const App = () => {
 
                 <Route path="/detalhamento" element={
                     <Detalhamento competenciaId={''} />
+                } />
+                <Route path="/cadastro" element={
+                    <CadastroUsuario />
                 } />
             </Routes>
         </Router>

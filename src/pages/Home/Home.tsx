@@ -6,6 +6,7 @@ import "../../shared/components/Header.tsx";
 import Header from "../../shared/components/Header.tsx";
 import ContainerListagem from "./components/ContainerListagem/ContainerListagem.tsx";
 import { useState } from "react";
+import HeaderHome from "./components/HeaderHome/HeaderHome.tsx";
 
 
 const Home = (props: { me: Me, setJwts: SetJwts }) => {
@@ -29,7 +30,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
     return (
 
         <>
-             <Header />
+            <HeaderHome></HeaderHome>
 
              <div className="search-container">
                     <div className="search-row">
@@ -69,6 +70,10 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
                         />
+                    </div>
+
+                    <div>
+                           <Link to="/cadastro">Cadrastrar funcionario</Link>
                     </div>
                 </div>
              

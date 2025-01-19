@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import * as api from "./api";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 export const authorization = {
     jwtAccessToken: "",
@@ -22,22 +22,30 @@ export type SetJwts = (jwts: {
 export function useAuth(): [Me | null, SetJwts] {
     const [jwtAccess, setJwtAccess] = useLocalStorage("jwt_access");
     const [jwtRefresh, setJwtRefresh] = useLocalStorage("jwt_refresh");
+    const [me, setMe] = useLocalStorage("me");
+
     useEffect(() => {
         authorization.jwtAccessToken = jwtAccess;
     }, [jwtAccess]);
+
     useEffect(() => {
         authorization.clearJwtAccessToken = () => {
             setJwtAccess("");
+            setMe("");
         };
     }, []);
+
     const access = useMemo(() => {
         if (!jwtAccess) return null;
         try {
-            return jwtDecode<Me>(jwtAccess);
+            const decoded = jwtDecode<Me>(jwtAccess);
+            setMe(JSON.stringify(decoded));
+            return decoded;
         } catch {
             return null;
         }
     }, [jwtAccess]);
+
     useEffect(() => {
         if (access) return;
         if (!jwtRefresh) return;
@@ -52,13 +60,22 @@ export function useAuth(): [Me | null, SetJwts] {
             if (e instanceof Response && e.status == 401) {
                 setJwtAccess("");
                 setJwtRefresh("");
+                setMe("");
             }
         });
     }, [access, jwtRefresh]);
+
     const setJwts: SetJwts = (jwts) => {
         setJwtAccess(jwts?.token_access || "");
         setJwtRefresh(jwts?.token_refresh || "");
+        if (jwts) {
+            const decoded = jwtDecode<Me>(jwts.token_access);
+            setMe(JSON.stringify(decoded));
+        } else {
+            setMe("");
+        }
     };
+
     return [access, setJwts] as const;
 }
 

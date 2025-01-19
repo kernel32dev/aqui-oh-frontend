@@ -1,0 +1,84 @@
+
+
+
+
+
+
+
+
+
+section.container_campos_cadrastro{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    background-color: #FFECEC;
+    /* border: 3px solid green; */
+}
+h1{
+    font-size: 3.5rem;
+}
+
+form.container_form_login{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+    width: 60vw;
+    height: 300px;
+    height: 70vh;
+    background-color:#FFECEC;
+    /* border: 3px solid green; */
+    border-radius: 30px;
+    background-color: rgba(225, 225, 225, 0.979);
+}
+form.container_form_login div{
+      display: flex;
+      flex-direction: column;
+}
+form.container_form_login div input {
+    min-width: 300px;
+    min-height: 30px;
+    padding-left: 10px;
+    border-radius: 5px;
+}
+
+form.container_form_login div{
+        display: flex;
+        flex-direction: column;
+}
+form.container_form_login div input {
+    min-width: 300px;
+    min-height: 30px;
+    padding-left: 10px;
+
+    border-radius: 5px;
+}
+form.container_form_login div input:focus {
+        /* outline: 1px solid blue; */
+}
+
+.butao-cadrastro{
+    font-size: 24px;
+    padding-inline: 30px;
+    padding-block: 5px;
+    border-radius: 10px;
+    background-color: #F36926;
+    height: 50px;
+    border: 0px;
+}
+.butao-cadrastro:hover{
+   color: white;
+   transition: 0.1s ease-in-out;
+   cursor: pointer;
+   border: 2px solid black;
+   
+}
+a:hover{
+    color: #F36926;
+    transition: 0.1s ease-in-out;
+    cursor: pointer;
+}
