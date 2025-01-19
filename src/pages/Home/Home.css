@@ -78,3 +78,35 @@
     border-radius: 4px;
     font-size: 16px;
 }
+
+nav#menu-opcoes{
+    /* border: 3px solid blue; */
+    padding: 0;
+    text-decoration: none;
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+}
+nav#menu-opcoes a{
+    text-decoration: none;
+    list-style: none;
+    display: block;
+    /* border: 1px solid green; */
+    margin-right: 30px;
+    padding-block: 8px;
+    padding-inline: 10px;
+    border-radius: 15px;
+    background-color: #007bff;
+}
+nav#menu-opcoes a{
+    color: white;
+    transition: 0.1s ease-in-out;
+    border: 1px solid transparent;
+}
+nav#menu-opcoes a:hover{
+    background-color: white;
+    color: #007bff;
+    /* height: 110%; */
+    /* font-weight: bold; */
+    border: 1px solid black;
+}

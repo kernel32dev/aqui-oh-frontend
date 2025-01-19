@@ -7,6 +7,8 @@ import Header from "../../shared/components/Header.tsx";
 import ContainerListagem from "./components/ContainerListagem/ContainerListagem.tsx";
 import { useState } from "react";
 import HeaderHome from "./components/HeaderHome/HeaderHome.tsx";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 const Home = (props: { me: Me, setJwts: SetJwts }) => {
@@ -31,6 +33,11 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
 
         <>
             <HeaderHome setJwts={props.setJwts}></HeaderHome>
+            <nav id="menu-opcoes" className="menu-opcoes">
+                <Link to="/cadastro" className="button-link">
+                    <FontAwesomeIcon icon={faUserPlus} style={{ marginRight: '8px' }} /> Cadrastrar Funcionário
+                </Link>
+            </nav>    
 
              <div className="search-container">
                     <div className="search-row">
@@ -72,9 +79,7 @@ const Home = (props: { me: Me, setJwts: SetJwts }) => {
                         />
                     </div>
 
-                    <div>
-                           <Link to="/cadastro">Cadrastrar funcionario</Link>
-                    </div>
+                    
                 </div>
              
              <ContainerListagem  

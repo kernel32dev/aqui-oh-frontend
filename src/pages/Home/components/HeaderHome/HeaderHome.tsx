@@ -19,6 +19,7 @@ import logo from "../../../../assets/logo.png";
 import { Me } from '../../../Login/auth';
 import { Link } from 'react-router-dom';
 import type { SetJwts } from "../../../Login/auth.ts";
+import { useEffect, useState } from 'react';
 
 interface HeaderHomeProps {
     setJwts: SetJwts;
@@ -26,15 +27,58 @@ interface HeaderHomeProps {
 
 const HeaderHome: React.FC<HeaderHomeProps> = (props) => {
 
-    const usuario_atual = JSON.parse(localStorage.getItem("me") || '{}') as Me;
+    const usuario_atual = JSON.parse(localStorage.getItem("me") || '{}') ;
+    const token_usuario = localStorage.getItem("jwt_access");
     const { setJwts } = props;
 
+    
+
+    interface Competencia {
+        name: string;
+        // Add other properties if needed
+    }
+    
+    const [competencia, setCompetencia] = useState<Competencia | {name:""}> ({name:""});
+
+    useEffect(() => {
+        const fetchCompetencia = async () => {
+
+            console.log(usuario_atual)
+
+            const response = await fetch(`http://localhost:3001/api/competencia/${usuario_atual.competeciaId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token_usuario}` // Substitua pelo seu token de acesso, se necessário
+                }
+            });
+        
+            if (!response.ok) {
+                console.error('Erro ao buscar competência:', response.statusText);
+                return;
+            }
+        
+            const competencia_encontrada = await response.json();
+            console.log(competencia_encontrada);
+            setCompetencia(competencia_encontrada)
+        };
+
+        fetchCompetencia();
+    }, []);
+
+    
+
     return (
-        <header className="header-home" style={{backgroundColor: '#F36926'}}>
+        // Additional code can be added here if needed
+        <header className="header-home" style={{backgroundColor: '#F36926' ,marginBottom:"0px"}}>
             {['false'].map((expand) => (
                 <Navbar key={expand} expand={expand !== 'false' && expand} className="bg-body-tertiary mb-3">
-                <Container fluid style={{backgroundColor: '#F36926',height:"10vh"} }>
-                    <Navbar.Brand href="#" style={{display:"block",height:"100%"}}><img src={logo} alt="" style={{ height: '100%', width: 'auto' }} /></Navbar.Brand>
+                <Container fluid style={{backgroundColor: '#F36926',minHeight:"10vh"} }>
+                    <Navbar.Brand href="#" style={{display:"block",height:"10vh"}}>
+                        <img src={logo} alt="" style={{ height: '100%', width: 'auto' }} />
+                        
+                    </Navbar.Brand>
+                  
                     <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} >
                         <FontAwesomeIcon icon={faUser} />
                     </Navbar.Toggle>
@@ -53,7 +97,7 @@ const HeaderHome: React.FC<HeaderHomeProps> = (props) => {
                         <Nav className="justify-content-end flex-grow-1 pe-3">
                             <Nav.Item>Nome: {usuario_atual.name}</Nav.Item>
                             <Nav.Item>Email: {usuario_atual.email} </Nav.Item>
-                            <Nav.Item>Compêtencia: </Nav.Item>
+                            <Nav.Item>Compêtencia: {competencia?.name} </Nav.Item>
                             
                             <Link to="/editar">Editar dados</Link>
                             <Link to="/login" onClick={() => props.setJwts(null)}>Logoff</Link>
@@ -83,11 +127,18 @@ const HeaderHome: React.FC<HeaderHomeProps> = (props) => {
                         />
                         <Button variant="outline-success">Search</Button>
                         </Form> */}
+
+
+                   
                     </Offcanvas.Body>
                     </Navbar.Offcanvas>
+                    
                 </Container>
+                
                 </Navbar>
             ))}
+            
+           
         </header>
     );
 };
