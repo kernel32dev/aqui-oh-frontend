@@ -2,177 +2,142 @@ import React, { useEffect, useState } from 'react';
 import './Detalhamento.css';
 import Header from '../../shared/components/Header';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
-import { formatarTextoStatus } from '../../utils/utils';
-interface Mensagem {
-    id: string;
-    text:string;
-    image:string;
-}
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCalendarAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 
-
 interface DetalhamentoProps {
-   tituloReclamacao?: string;
-   dataReclamacao?: string;
-   localReclamacao?: string;
-
-   title?:string;
-   data?:string;
-   local?:string;
-   status?:string;
-   competenciaId:string;
+    title?: string;
+    data?: string;
+    local?: string;
+    status?: string;
+    competenciaId: string;
 }
 
+interface Mensagem {
+    type: string;
+    id: string;
+    text: string;
+    image: string;
+    dth: string;
+    lat: string;
+    lng: string;
+    userId: string;
+}
 
-const Detalhamento: React.FC <DetalhamentoProps>= () => {
+const Detalhamento: React.FC<DetalhamentoProps> = () => {
     const location = useLocation();
-    const { id,title, data, local, status,competenciaId } = location.state as { id:string; title: string; data: string; local: string; status: string,competenciaId:string };
-    
-    const [listaMensgens,setListaMensagens] = useState<Mensagem[]>([]);
+    const { id, title, data, local, status, competenciaId } = location.state as { id: string; title: string; data: string; local: string; status: string, competenciaId: string };
 
+    const [listaMensagens, setListaMensagens] = useState<Mensagem[]>([]);
     const [statusReclamacao, setStatusReclamacao] = useState<string>(status);
     const [novaMensagem, setNovaMensagem] = useState<string>('');
+    const [ws, setWs] = useState<WebSocket | null>(null);
+    const [nomesUsuarios, setNomesUsuarios] = useState<{ [key: string]: string }>({}); // Mapeamento userId -> nome
 
- 
-    async function atualizarStatusReclamacao(status_atual: string) {
-        console.log('Status atual no momento:', statusReclamacao);
+    async function obterNomeUsuario(userId: string): Promise<string> {
+        if (nomesUsuarios[userId]) { // Evitar chamadas repetidas
+            return nomesUsuarios[userId];
+        }
+
         try {
             const token_usuario = localStorage.getItem("jwt_access");
-            console.log('Enviando requisição para atualizar status...');
-            const body =await JSON.stringify({ status: status_atual });
-            setStatusReclamacao(formatarTextoStatus(status_atual));
-            const response = await fetch(`/api/reclamacao/${id}`, {
-                method: 'PUT',
+            const response = await fetch(`/api/user/${userId}`, {
+                method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token_usuario}`,
                     'Content-Type': 'application/json',
                 },
-                body: body
             });
-            
-
-            if (!response.ok) {
-                throw new Error('Erro na requisição');
-            }
-
             const data = await response.json();
-            console.log('Status atualizado:', data);
-            setStatusReclamacao(status_atual);
+            
+            // Atualiza o estado com o novo nome do usuário
+            setNomesUsuarios(prev => ({ ...prev, [userId]: data.name }));
+            return data.name;
         } catch (error) {
-            console.error('Erro ao atualizar status:', error);
+            console.error('Erro ao obter nome do usuário:', error);
+            return 'Desconhecido';
         }
     }
 
     useEffect(() => {
-        const fetchMensagens = async () => {
-            try {
-                const token_usuario = localStorage.getItem("jwt_access");
-                const response = await axios.get('/api/mensagem/'+id, {
-                    headers: {
-                        Authorization: `Bearer ${token_usuario}`,
-                         ContentType: 'application/json',
-                    }
-                });
-                console.log('Mensagens:', response.data);
+        const token_usuario = localStorage.getItem("jwt_access");
+        const ws = new WebSocket(`ws://localhost:3001/api/mensagem/${id}?auth=Bearer ${token_usuario}`);
 
+        ws.onopen = () => console.log("Conexão WebSocket aberta");
+        ws.onmessage = (event) => {
+            const novaMensagem: Mensagem = JSON.parse(event.data);
+            if (novaMensagem.type === "Reclamacao") return;
 
-
-                setListaMensagens(response.data as Mensagem[]);
-            } catch (error) {
-                console.error('Erro ao buscar reclamações:', error);
+            setListaMensagens(prevMensagens => {
+                const jaExiste = prevMensagens.some(msg => msg.id === novaMensagem.id);
+                return jaExiste ? prevMensagens : [...prevMensagens, novaMensagem];
+            });
+        
+            if (!nomesUsuarios[novaMensagem.userId]) {
+                obterNomeUsuario(novaMensagem.userId);
             }
         };
+        ws.onclose = () => console.log("Conexão WebSocket fechada");
+        ws.onerror = (error) => console.error("Erro no WebSocket:", error);
 
-        fetchMensagens();
+        setWs(ws);
+        return () => ws.close();
+    }, [id]);
 
-    }, []);
+    const enviarMensagem = () => {
+        if (ws && novaMensagem.trim() !== '') {
+            const userId = JSON.parse(localStorage.getItem("me") || '{}').id;
+            const mensagem: Mensagem = {
+                type: "Mensagem",
+                id: '', // O servidor deve definir o ID único
+                text: novaMensagem,
+                image: '',
+                dth: new Date().toISOString(),
+                lat: '',
+                lng: '',
+                userId,
+            };
     
-    
+            ws.send(JSON.stringify(mensagem));
+            setNovaMensagem('');
+            // Removido o setListaMensagens aqui para evitar duplicação
+        }
+    };
+
     return (
         <>
-
             <Header />
-
             <section className='container-detalhamento'>
-
-                <h1 id='titulo-reclamacao' style={{fontSize:"22px"}}>{title}</h1>
-
+                <h1>{title}</h1>
                 <div className='container-info'>
-                    <span> <FontAwesomeIcon icon={faCalendarAlt} /> Data: {data}</span>
+                    <span><FontAwesomeIcon icon={faCalendarAlt} /> Data: {data}</span>
                     <span><FontAwesomeIcon icon={faMapMarkerAlt} /> Local: {local}</span>
                     <span>Status atual: {statusReclamacao}</span>
-
-                    <form  >
-                        <label htmlFor="status">Selecione o status:</label>
-                        <select name="status" id="status" onChange={ (evento) => { atualizarStatusReclamacao(evento.target.value) }    }   >
-                            <option value="aberto" >Aberto</option>
-                            <option value="em_andamento">Em andamento</option>
-                            <option value="resolvido">Resolvido</option>
-                        </select>
-                        
-                    </form>
-                    {/* <span>id: {id}</span> */}
                 </div>
 
-                <div className='container-imagem'>
-                        
-                    <img src="https://th.bing.com/th/id/OIP.dIW9qe3--A4I-gMSjtjQjgHaFi?w=800&h=599&rs=1&pid=ImgDetMain" alt="imagem de exemplo da denuncia" />
-                </div>
+                {listaMensagens.map((mensagem) => (
+    <div key={mensagem.id || `${mensagem.userId}-${mensagem.dth}`} className='container-mensagem'>
+        <span>Autor: {nomesUsuarios[mensagem.userId] || 'Carregando...'}</span>
+        <p>{mensagem.text}</p>
+        {mensagem.image && (
+            <img src={mensagem.image} alt="Imagem da denúncia" />
+        )}
+    </div>
+))}
 
-                <div className='container-mensagem'>
-                        <span>Mensagem:</span>
-                        <p>Gostaria de registrar uma denúncia sobre um problema que está acontecendo na Rua Antônio Ribeiro. Tem um buraco bem grande no meio da rua, que está dificultando a passagem de carros e também é perigoso para pedestres, principalmente à noite, porque é difícil de enxergar. Já vi alguns motoristas precisando desviar de repente, e isso pode acabar causando um acidente. Acho importante que a prefeitura tome providências para sinalizar e consertar o buraco o mais rápido possível, antes que aconteça algo mais grave.</p>
-                </div>
-
-
-             
-                {/* {listaMensgens.map((mensagem) => (
-                    <div key={mensagem.id} className='container-imagem'>
-                        {mensagem.image && (
-                            <div className='container-imagem'>
-                        
-                                <img src={mensagem.image} alt="imagem de exemplo da denuncia" />
-                            </div>
-                        )}
-                    </div>
-                ))}
-
-           
-
-
-                {listaMensgens.map((mensagem) => (
-                    <div key={mensagem.id} className='container-mensagem'>
-                        <span>Mensagem:</span>
-                        <p>{mensagem.text}</p>
-                    </div>
-                ))} */}
-
-
-
-               
-
-                {/* <div className='container-butao-chat2'>
-                    <button>Ir para chat</button>
-                </div> */}
-
-          <div className='container-input'>
+                <div className='container-input'>
                     <input
                         type="text"
                         placeholder="Digite sua mensagem..."
                         value={novaMensagem}
                         onChange={(e) => setNovaMensagem(e.target.value)}
-                        className="textoMensagemEnvio-input"
+                        className='textoMensagemEnvio-input'
                     />
-                    <button type="button"  className="textoMensagemEnvio-button">Enviar</button>
+                    <button onClick={enviarMensagem} className='textoMensagemEnvio-button'>Enviar</button>
                 </div>
             </section>
-         
         </>
     );
 };
 
 export default Detalhamento;
-
