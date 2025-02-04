@@ -61,7 +61,8 @@ const Detalhamento: React.FC<DetalhamentoProps> = () => {
 
     useEffect(() => {
         const token_usuario = localStorage.getItem("jwt_access");
-        const ws = new WebSocket(`ws://localhost:3001/api/mensagem/${id}?auth=Bearer ${token_usuario}`);
+        const url = new URL(`/api/mensagem/${id}?auth=Bearer ${token_usuario}`, window.location.href);
+        const ws = new WebSocket(url.href.replace(/^http/, "ws"));
 
         ws.onopen = () => console.log("Conexão WebSocket aberta");
         ws.onmessage = (event) => {
