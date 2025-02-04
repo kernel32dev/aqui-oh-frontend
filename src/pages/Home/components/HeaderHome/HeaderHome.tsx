@@ -45,7 +45,7 @@ const HeaderHome: React.FC<HeaderHomeProps> = (props) => {
 
             console.log(usuario_atual)
 
-            const response = await fetch(`http://localhost:3001/api/competencia/${usuario_atual.competeciaId}`, {
+            const response = await fetch(`/api/competencia/${usuario_atual.competeciaId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

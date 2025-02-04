@@ -15,7 +15,7 @@ const EditarFuncionario: React.FC = () => {
 
         const token_usuario = localStorage.getItem("jwt_access");
         try {
-            const response = await fetch(`http://localhost:3001/api/user/${usuario_atual.id}`, {
+            const response = await fetch(`/api/user/${usuario_atual.id}`, {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token_usuario}` // Substitua pelo seu token de acesso, se necessário
@@ -46,7 +46,7 @@ const EditarFuncionario: React.FC = () => {
         console.log(usuario_atual)
         console.log(competenciaId)
     
-        const response = await fetch('http://localhost:3001/api/user/'+usuario_atual.id, {
+        const response = await fetch('/api/user/'+usuario_atual.id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

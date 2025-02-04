@@ -36,7 +36,7 @@ const ContainerListagem: React.FC<ContainerListagemProps> = ({ searchTerm, filte
         const fetchReclamacoes = async () => {
             try {
                 const token_usuario = localStorage.getItem("jwt_access");
-                const response = await axios.get('http://localhost:3001/api/reclamacao', {
+                const response = await axios.get('/api/reclamacao', {
                     headers: {
                         Authorization: `Bearer ${token_usuario}`
                     }

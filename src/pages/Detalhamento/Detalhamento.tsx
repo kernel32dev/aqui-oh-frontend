@@ -44,7 +44,7 @@ const Detalhamento: React.FC <DetalhamentoProps>= () => {
             console.log('Enviando requisição para atualizar status...');
             const body =await JSON.stringify({ status: status_atual });
             setStatusReclamacao(formatarTextoStatus(status_atual));
-            const response = await fetch(`http://localhost:3001/api/reclamacao/${id}`, {
+            const response = await fetch(`/api/reclamacao/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token_usuario}`,
@@ -70,7 +70,7 @@ const Detalhamento: React.FC <DetalhamentoProps>= () => {
         const fetchMensagens = async () => {
             try {
                 const token_usuario = localStorage.getItem("jwt_access");
-                const response = await axios.get('http://localhost:3001/api/mensagem/'+id, {
+                const response = await axios.get('/api/mensagem/'+id, {
                     headers: {
                         Authorization: `Bearer ${token_usuario}`,
                          ContentType: 'application/json',
